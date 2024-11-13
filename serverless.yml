@@ -2,7 +2,7 @@ service: my-express-app
 
 provider:
   name: aws
-  runtime: nodejs18.x  # Specify the Node.js runtime version
+  runtime: nodejs20.x  # Specify the Node.js runtime version
   region: ap-south-1  # Specify the AWS region (optional)
 
 functions:
