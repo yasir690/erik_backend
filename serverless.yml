@@ -7,7 +7,7 @@ provider:
 
 functions:
   app:
-    handler: app.handler  # Ensure that Lambda uses the correct handler (app.js)
+    handler: index.handler  # Correct the handler to point to index.js
     events:
       - http:
           path: /  # Handles the root URL
