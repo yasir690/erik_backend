@@ -36,9 +36,9 @@ app.get("/", (req, res) => {
   res.send("welcome to erik application deployed on serverless");
 });
 
-app.listen(port, () => {
-  console.log(`server is running at ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`server is running at ${port}`);
+// });
 
 //for server less
 
