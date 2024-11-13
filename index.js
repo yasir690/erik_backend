@@ -33,7 +33,7 @@ app.use(apiPrefix, subTaskRouters);
 dbConnect();
 
 app.get("/", (req, res) => {
-  res.send("welcome to erik application deployed on ec2");
+  res.send("welcome to erik application deployed on serverless");
 });
 
 app.listen(port, () => {
