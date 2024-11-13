@@ -6,7 +6,7 @@ import path from "path";
 import { UserRouters } from "./router/userRouter.js";
 import { TaskRouters } from "./router/taskRouter.js";
 import { subTaskRouters } from "./router/subTaskRouter.js";
-import serverless from 'serverless-http';
+// import serverless from 'serverless-http';
 const app = express();
 
 const apiPrefix = process.env.API_PRIFEX;
@@ -40,4 +40,4 @@ app.listen(port, () => {
   console.log(`server is running at ${port}`);
 });
 
-export const handler = serverless(app);
+// export const handler = serverless(app);
