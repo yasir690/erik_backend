@@ -22,3 +22,10 @@ plugins:
 environment:
   API_PREFIX: "/api/v1"  # Set the API_PREFIX environment variable
   PORT: 4000  # Default port, although AWS Lambda doesn't use it
+  
+package:
+  include:
+    - index.js  # Ensure index.js is included in the deployment
+    - node_modules/**  # Include node_modules for dependencies
+    - router/**  # Include your router files if necessary
+    - connectivity.js  # Include any other needed files
