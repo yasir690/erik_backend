@@ -33,7 +33,7 @@ app.use(apiPrefix, subTaskRouters);
 dbConnect();
 
 app.get("/", (req, res) => {
-  res.send("welcome to application");
+  res.send("welcome to erik application");
 });
 
 app.listen(port, () => {
