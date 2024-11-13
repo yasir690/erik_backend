@@ -2,26 +2,23 @@ service: my-express-app
 
 provider:
   name: aws
-  runtime: nodejs20.x  # Specify the Node.js runtime version
-  region: ap-south-1  # Specify the AWS region (optional)
+  runtime: nodejs20.x  # Specify Node.js runtime version
+  region: ap-south-1  # Specify AWS region
 
 functions:
   app:
-    handler: app.handler  # Point to the Lambda handler (app.js)
+    handler: app.handler  # Ensure that Lambda uses the correct handler (app.js)
     events:
       - http:
-          path: /  # This is the root path of the API
-          method: any  # This will catch all HTTP methods (GET, POST, etc.)
+          path: /  # Handles the root URL
+          method: any  # Handles all HTTP methods (GET, POST, etc.)
       - http:
-          path: /{proxy+}  # This will catch all other paths in the app
+          path: /{proxy+}  # Catches all other paths
           method: any  # Handles all HTTP methods
-
-  # Optional: Add more functions if necessary
 
 plugins:
   - serverless-offline  # For testing locally
 
-# Optional: Environment variables for Lambda
-# environment:
-#   API_PREFIX: "/api"  # Set your API prefix here if needed
-#   PORT: 4000  # Default port, though Lambda doesn't really use this
+environment:
+  API_PREFIX: "/api/v1"  # Set the API_PREFIX environment variable
+  PORT: 4000  # Default port, although AWS Lambda doesn't use it

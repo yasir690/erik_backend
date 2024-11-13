@@ -1,45 +1,81 @@
-import express from "express";
-import bodyParser from "body-parser";
-import dbConnect from "./connectivity.js";
-import path from "path";
+// import express from "express";
+// import bodyParser from "body-parser";
+// import dbConnect from "./connectivity.js";
+// import path from "path";
 
-import { UserRouters } from "./router/userRouter.js";
-import { TaskRouters } from "./router/taskRouter.js";
-import { subTaskRouters } from "./router/subTaskRouter.js";
-import serverless from 'serverless-http';
-const app = express();
+// import { UserRouters } from "./router/userRouter.js";
+// import { TaskRouters } from "./router/taskRouter.js";
+// import { subTaskRouters } from "./router/subTaskRouter.js";
+// import serverless from 'serverless-http';
+// const app = express();
 
-const apiPrefix = process.env.API_PRIFEX;
-const port = process.env.PORT || 4000;
+// const apiPrefix = process.env.API_PRIFEX;
+// const port = process.env.PORT || 4000;
 
-app.use(express.static('public'));
+// app.use(express.static('public'));
 
 
-app.use(bodyParser.json());
-// Configure bodyParser to handle post requests
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// // Configure bodyParser to handle post requests
+// app.use(bodyParser.urlencoded({ extended: true }));
 
-//user router
-app.use(apiPrefix, UserRouters);
+// //user router
+// app.use(apiPrefix, UserRouters);
 
-// task router
+// // task router
 
-app.use(apiPrefix, TaskRouters);
+// app.use(apiPrefix, TaskRouters);
 
-//sub task router
+// //sub task router
 
-app.use(apiPrefix, subTaskRouters);
+// app.use(apiPrefix, subTaskRouters);
 
-dbConnect();
+// dbConnect();
 
-app.get("/", (req, res) => {
-  res.send("welcome to erik application deployed on serverless");
-});
+// app.get("/", (req, res) => {
+//   res.send("welcome to erik application deployed on serverless");
+// });
 
 // app.listen(port, () => {
 //   console.log(`server is running at ${port}`);
 // });
 
+
+// export const handler = serverless(app);
+
+
 //for server less
 
+
+import express from 'express';
+import bodyParser from 'body-parser';
+import dbConnect from './connectivity.js';
+import { UserRouters } from './router/userRouter.js';
+import { TaskRouters } from './router/taskRouter.js';
+import { subTaskRouters } from './router/subTaskRouter.js';
+import serverless from 'serverless-http';
+
+const app = express();
+
+const apiPrefix = process.env.API_PREFIX || '/api/v1';  // Use corrected API_PREFIX
+const port = process.env.PORT || 4000;
+
+app.use(express.static('public'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Define routes
+app.use(apiPrefix, UserRouters);
+app.use(apiPrefix, TaskRouters);
+app.use(apiPrefix, subTaskRouters);
+
+// Database connection
+dbConnect();
+
+// Root route (for testing)
+app.get('/', (req, res) => {
+  res.send('Welcome to the application deployed on Lambda!');
+});
+
+// Export handler for AWS Lambda
 export const handler = serverless(app);
