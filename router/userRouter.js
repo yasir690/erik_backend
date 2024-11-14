@@ -1,23 +1,34 @@
-import express from "express";
-import * as userController from "../controller/userController.js";
-import auth from "../middleware/auth.js";
-export const UserRouters = express.Router();
+const express = require('express');
+const userController = require('../controller/userController'); // Importing controller without the .js extension
+const auth = require('../middleware/auth');
+const limiter = require('../middleware/throttleservice');
 
-import limiter from "../middleware/throttleservice.js";
-//user register routes
+// Create a router instance
+const UserRouters = express.Router();
+
+// User register route
 UserRouters.post("/userRegister", limiter, userController.userRegister);
 
-//user login routes
+// User login route
 UserRouters.post("/userLogin", limiter, userController.userLogin);
 
+// Forget password route
 UserRouters.post("/forgetPassword", userController.forgetPassword);
 
+// Verify OTP route
 UserRouters.post("/verifyOtp", limiter, userController.verifyOtp);
 
+// Reset password route
 UserRouters.post("/resetPassword", auth, limiter, userController.resetPassword);
 
-UserRouters.put("/updateImage", auth, limiter, userController.updateImage);
+// Update image route
+// UserRouters.put("/updateImage", auth, limiter, userController.updateImage);
 
+// Get user by ID route
 UserRouters.get("/getUserById/:id", auth, limiter, userController.getUserById);
 
+// Get user route
 UserRouters.get("/getUser", auth, limiter, userController.getUser);
+
+// Export the router
+module.exports = UserRouters;

@@ -1,7 +1,7 @@
-import { config } from "dotenv";
-config();
+require('dotenv').config();
 
-export const emailConfig = {
+
+ const emailConfig = {
   pool: true,
   port: 465,
   secure: true,
@@ -11,3 +11,6 @@ export const emailConfig = {
     pass: process.env.MAIL_PASSWORD,
   },
 };
+
+module.exports = emailConfig;
+

@@ -1,16 +1,17 @@
-import subtaskModel from "../model/subtaskModel.js";
-import userModel from "../model/userModel.js";
-import taskModel from "../model/taskModel.js";
-import mongoose from "mongoose";
-import moment from "moment/moment.js";
-import PDFDocument from 'pdfkit';
-// import { Redis } from "ioredis";
-import { loggerError, loggerInfo } from "../utils/log.js";
+const subtaskModel = require("../model/subtaskModel");
+const userModel = require("../model/userModel");
+const taskModel = require("../model/taskModel");
+const mongoose = require("mongoose");
+const moment = require("moment");
+const PDFDocument = require("pdfkit");
+// const Redis = require("ioredis");
+const { loggerError, loggerInfo } = require("../utils/log");
+
 
 // const redisClient = new Redis();
 //create subtask
 
-export const createSubtask = async (req, res) => {
+ const createSubtask = async (req, res) => {
   try {
     const { user_id } = req.user;
     const {
@@ -148,7 +149,7 @@ export const createSubtask = async (req, res) => {
 
 //get all subtask
 
-export const getSubTask = async (req, res) => {
+ const getSubTask = async (req, res) => {
   try {
     const { user_id } = req.user;
 
@@ -224,7 +225,7 @@ export const getSubTask = async (req, res) => {
 };
 
 //get subtask by subtask id
-export const getSubTaskById = async (req, res) => {
+ const getSubTaskById = async (req, res) => {
   try {
     const { user_id } = req.user;
     const { id } = req.params;
@@ -320,7 +321,7 @@ export const getSubTaskById = async (req, res) => {
 };
 
 //update subtask by subtask id
-export const updateSubTask = async (req, res) => {
+ const updateSubTask = async (req, res) => {
   try {
     const { user_id } = req.user;
     const { id } = req.params;
@@ -436,7 +437,7 @@ export const updateSubTask = async (req, res) => {
 
 
 //delete subtask by subtask id
-export const deleteSubTask = async (req, res) => {
+ const deleteSubTask = async (req, res) => {
   try {
     const { user_id } = req.user;
     const { id } = req.params;
@@ -522,7 +523,7 @@ export const deleteSubTask = async (req, res) => {
 };
 
 
-export const genaratePdfSubtask=async(req,res)=>{
+ const genaratePdfSubtask=async(req,res)=>{
   try {
     
 
@@ -585,3 +586,12 @@ export const genaratePdfSubtask=async(req,res)=>{
     })
   }
 }
+
+module.exports = {
+  createSubtask,
+  getSubTask,
+  getSubTaskById,
+  updateSubTask,
+  deleteSubTask,
+  genaratePdfSubtask,
+};

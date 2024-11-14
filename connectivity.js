@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import dbConfig from "./config/dbConfig.js";
+const mongoose = require('mongoose');
+const dbConfig = require('./config/dbConfig'); // Assuming dbConfig is in CommonJS format as well
 
 const dbConnect = async () => {
   try {
@@ -13,4 +13,4 @@ const dbConnect = async () => {
   }
 };
 
-export default dbConnect;
+module.exports = dbConnect;

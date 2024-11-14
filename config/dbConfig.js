@@ -1,9 +1,9 @@
-import { config } from "dotenv";
-config();
+// Import dotenv to load environment variables
+require('dotenv').config();
 
 const dbConfig = {
-  // MongoDB connection string
+  // MongoDB connection string from environment variables
   db: process.env.DB_COLLECTION,
 };
 
-export default dbConfig;
+module.exports = dbConfig;

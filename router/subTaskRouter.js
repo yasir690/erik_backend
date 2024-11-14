@@ -1,8 +1,9 @@
-import express from "express";
-export const subTaskRouters = express.Router();
-import auth from "../middleware/auth.js";
-import * as subTaskController from "../controller/subTaskController.js";
-import limiter from "../middleware/throttleservice.js";
+const express = require('express');
+const subTaskController = require('../controller/subTaskController'); // Importing controller without the .js extension
+const auth = require('../middleware/auth');
+const limiter = require('../middleware/throttleservice');
+
+const subTaskRouters = express.Router();
 //create sub task router
 subTaskRouters.post(
   "/createSubTask",
@@ -38,3 +39,5 @@ subTaskRouters.delete(
 );
 
 subTaskRouters.get("/generatepdfsubtask/:id",auth, limiter, subTaskController.genaratePdfSubtask);
+
+module.exports=subTaskRouters;

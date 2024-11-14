@@ -1,17 +1,18 @@
-import subtaskModel from "../model/subtaskModel.js";
-import taskModel from "../model/taskModel.js";
-import userModel from "../model/userModel.js";
-import mongoose from "mongoose";
-import moment from "moment/moment.js";
-// import { Redis } from "ioredis";
-import { loggerError, loggerInfo } from "../utils/log.js";
-import PDFDocument from 'pdfkit';
-import fs from 'fs';
-import path from 'path';
+const subtaskModel = require("../model/subtaskModel");
+const taskModel = require("../model/taskModel");
+const userModel = require("../model/userModel");
+const mongoose = require("mongoose");
+const moment = require("moment");
+// const Redis = require("ioredis");
+const { loggerError, loggerInfo } = require("../utils/log");
+const PDFDocument = require("pdfkit");
+const fs = require("fs");
+const path = require("path");
+
 // const redisClient = new Redis();
 //create task
 
-export const createTask = async (req, res) => {
+ const createTask = async (req, res) => {
   try {
     const { user_id } = req.user;
     const {
@@ -131,7 +132,7 @@ export const createTask = async (req, res) => {
 
 //get task
 
-export const getTask = async (req, res) => {
+ const getTask = async (req, res) => {
   try {
     const { user_id } = req.user;
 
@@ -196,7 +197,7 @@ export const getTask = async (req, res) => {
 
 //get task by task id
 
-export const getTaskById = async (req, res) => {
+ const getTaskById = async (req, res) => {
   try {
     const { user_id } = req.user;
     const { id } = req.params;
@@ -275,7 +276,7 @@ export const getTaskById = async (req, res) => {
 
 //update task by task id
 
-export const updateTask = async (req, res) => {
+ const updateTask = async (req, res) => {
   try {
     const { id } = req.params;
     const { user_id } = req.user;
@@ -418,7 +419,7 @@ const scheduledinmilisecondnumber=parseInt(scheduledinmilisecond);
 
 //delete task by task id
 
-export const deleteTask = async (req, res) => {
+ const deleteTask = async (req, res) => {
   try {
     const { user_id } = req.user;
     const { id } = req.params;
@@ -497,7 +498,7 @@ export const deleteTask = async (req, res) => {
 
 //get task by task date
 
-export const getTaskByDate = async (req, res) => {
+ const getTaskByDate = async (req, res) => {
   try {
     const { user_id } = req.user;
     const { targetDate } = req.query;
@@ -574,7 +575,7 @@ export const getTaskByDate = async (req, res) => {
   }
 };
 
-export const genaratePdfTask=async(req,res)=>{
+ const genaratePdfTask=async(req,res)=>{
   try {
 
     const {user_id}=req.user;
@@ -647,3 +648,13 @@ export const genaratePdfTask=async(req,res)=>{
     })
   }
 }
+
+module.exports = {
+  createTask,
+  getTask,
+  getTaskById,
+  updateTask,
+  deleteTask,
+  getTaskByDate,
+  genaratePdfTask,
+};

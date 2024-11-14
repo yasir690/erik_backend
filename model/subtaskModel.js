@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const subtasksSchema = new mongoose.Schema({
   subTaskTitle: {
@@ -40,4 +40,4 @@ const subtasksSchema = new mongoose.Schema({
 
 const subtaskModel = mongoose.model("subtasks", subtasksSchema);
 
-export default subtaskModel;
+module.exports=subtaskModel;

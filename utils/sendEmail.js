@@ -1,11 +1,13 @@
-import nodemailer from "nodemailer";
-import { emailConfig } from "../config/emailConfig.js";
+// import nodemailer from "nodemailer";
+// import { emailConfig } from "../config/emailConfig.js";
 
+const nodemailer=require('nodemailer');
+const emailConfig=require('../config/emailConfig')
 // create reusable transporter object using the default SMTP transport
 const transporter = nodemailer.createTransport(emailConfig);
 
 // send mail with defined transport object
-export const sendEmails = (to, subject, content, next) => {
+ const sendEmails = (to, subject, content, next) => {
   try {
     const message = {
       from: {
@@ -21,3 +23,4 @@ export const sendEmails = (to, subject, content, next) => {
     console.error(error);
   }
 };
+module.exports=sendEmails;

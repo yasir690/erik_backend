@@ -1,8 +1,10 @@
-import express from "express";
-export const TaskRouters = express.Router();
-import auth from "../middleware/auth.js";
-import * as taskController from "../controller/taskController.js";
-import limiter from "../middleware/throttleservice.js";
+const express = require('express');
+const taskController = require('../controller/taskController'); // Importing controller without the .js extension
+const auth = require('../middleware/auth');
+const limiter = require('../middleware/throttleservice');
+
+const TaskRouters = express.Router();
+
 //create task router
 TaskRouters.post("/createTask", auth, limiter, taskController.createTask);
 
@@ -26,3 +28,4 @@ TaskRouters.get("/getTaskByDate", auth, limiter, taskController.getTaskByDate);
 
 TaskRouters.get("/generatepdftask/:id",auth, limiter, taskController.genaratePdfTask);
 
+module.exports=TaskRouters;

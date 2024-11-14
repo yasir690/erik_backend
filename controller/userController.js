@@ -1,20 +1,19 @@
-import userModel from "../model/userModel.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import { config } from "dotenv";
-import { randomInt } from "crypto";
-import otpModel from "../model/otpModel.js";
-import { sendEmails } from "../utils/sendEmail.js";
-import { handleMultipartData } from "../utils/multiPartData.js";
-import mongoose from "mongoose";
-// import { Redis } from "ioredis";
+const userModel = require("../model/userModel");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { config } = require("dotenv");
+const { randomInt } = require("crypto");
+const otpModel = require("../model/otpModel");
+const { sendEmails } = require("../utils/sendEmail");
+const { handleMultipartData } = require("../utils/multiPartData");
+const mongoose = require("mongoose");
+// const Redis = require("ioredis");
 // const redisClient = new Redis();
 
-import { loggerInfo, loggerError } from '../utils/log.js';
+const { loggerInfo, loggerError } = require('../utils/log');
 
-
-//user register
-export const userRegister = async (req, res) => {
+// user register
+const userRegister = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
@@ -27,7 +26,6 @@ export const userRegister = async (req, res) => {
     }
     if (!email) {
       loggerError.error('provide email');
-
       return res.status(400).json({
         success: false,
         message: "provide email",
@@ -35,13 +33,11 @@ export const userRegister = async (req, res) => {
     }
     if (!password) {
       loggerError.error('provide password');
-
       return res.status(400).json({
         success: false,
         message: "provide password",
       });
     }
-
 
     // Check if the user exists in the database
     const userCheck = await userModel.find({ email: email });
@@ -59,7 +55,6 @@ export const userRegister = async (req, res) => {
       name,
       email,
       password: bcrypt.hashSync(password, 10),
-      // userType
     });
 
     const token = jwt.sign({ user_id: user._id }, process.env.SECRET_KEY, {
@@ -87,9 +82,7 @@ export const userRegister = async (req, res) => {
       data: saveUser,
     });
   } catch (error) {
-    // Handle any errors that occur during registration
     loggerError.error("Internal server error", error.message);
-    console.error(error);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -98,8 +91,8 @@ export const userRegister = async (req, res) => {
   }
 };
 
-//user login
-export const userLogin = async (req, res) => {
+// user login
+const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -149,24 +142,22 @@ export const userLogin = async (req, res) => {
     const profile = { ...user._doc, userToken: token };
 
     loggerInfo.info("User Login Successfully");
-    // Return the response with user data and token
     return res.status(200).json({
       success: true,
       message: "User Login Successfully",
       data: profile,
     });
   } catch (error) {
-
     loggerError.error("Internal server error", error.message);
-    console.error(error);
-    return res
-      .status(500)
-      .json({ success: false, message: "Internal server error" });
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
   }
 };
 
-//forget password
-export const forgetPassword = async (req, res) => {
+// forget password
+const forgetPassword = async (req, res) => {
   try {
     const { email } = req.body;
     const user = await userModel.findOne({ email: email }).populate("otpEmail");
@@ -181,27 +172,16 @@ export const forgetPassword = async (req, res) => {
 
     const OTP = randomInt(10000, 99999);
 
-    // Create a new OTP document
     const newOTP = new otpModel({
       otpKey: OTP,
       otpUsed: false,
     });
 
-    // Save the new OTP document
     const savedOTP = await newOTP.save();
-
-    // Assign the OTP document reference to the user's otpEmail field
     user.otpEmail = savedOTP._id;
     await user.save();
-    loggerInfo.info("test");
 
-    // Send the OTP to the user's email
-    sendEmails(
-      user.email,
-      "Code sent successfully",
-      `<h5>Your code is ${OTP}</h5>`
-    );
-
+    sendEmails(user.email, "Code sent successfully", `<h5>Your code is ${OTP}</h5>`);
     loggerInfo.info("Code sent successfully");
 
     return res.status(200).json({
@@ -211,7 +191,6 @@ export const forgetPassword = async (req, res) => {
     });
   } catch (error) {
     loggerError.error("Internal server error", error.message);
-    console.error(error);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -219,12 +198,10 @@ export const forgetPassword = async (req, res) => {
   }
 };
 
-//verify otp
-
-export const verifyOtp = async (req, res) => {
+// verify OTP
+const verifyOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
-
     const user = await userModel.findOne({ email }).populate("otpEmail");
 
     if (!user) {
@@ -270,7 +247,6 @@ export const verifyOtp = async (req, res) => {
       });
     }
 
-    // Generate token
     const token = jwt.sign({ user_id: user._id }, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
@@ -287,7 +263,6 @@ export const verifyOtp = async (req, res) => {
 
     const profile = { ...user._doc, userToken: token };
 
-
     loggerInfo.info("OTP verified successfully");
     return res.status(200).json({
       success: true,
@@ -296,7 +271,6 @@ export const verifyOtp = async (req, res) => {
     });
   } catch (error) {
     loggerError.error("Internal server error", error.message);
-    console.error(error);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -304,8 +278,8 @@ export const verifyOtp = async (req, res) => {
   }
 };
 
-//reset password
-export const resetPassword = async (req, res) => {
+// reset password
+const resetPassword = async (req, res) => {
   try {
     const { password, confirmPassword } = req.body;
     const { user_id } = req.user;
@@ -349,9 +323,7 @@ export const resetPassword = async (req, res) => {
       });
     }
 
-
-    loggerInfo.info("Password reset successfully")
-
+    loggerInfo.info("Password reset successfully");
     return res.status(200).json({
       success: true,
       message: "Password reset successfully",
@@ -366,79 +338,70 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-//update image
-export const updateImage = [
-  handleMultipartData.fields([
-    {
-      name: "image",
-      maxCount: 1,
-    },
-  ]),
+// update image
+// const updateImage = [
+//   handleMultipartData.fields([
+//     {
+//       name: "image",
+//       maxCount: 1,
+//     },
+//   ]),
 
-  async (req, res) => {
-    try {
-      const { user_id } = req.user;
-      const { files } = req;
-      const filesArray = (filesObj, type) => {
-        if (!filesObj[type].length) {
-          return "";
-        }
-        const file = filesObj[type][0]; // Get the first file from the array
-        const imagePath = file.path.replace(/\\/g, "/").replace("public/", "");
-        const baseUrl = `${req.protocol}://${req.get("host")}`;
-        const fullImagePath = `${baseUrl}/${imagePath}`;
-        return fullImagePath;
-      };
-    
+//   async (req, res) => {
+//     try {
+//       const { user_id } = req.user;
+//       const { files } = req;
+//       const filesArray = (filesObj, type) => {
+//         if (!filesObj[type].length) {
+//           return "";
+//         }
+//         const file = filesObj[type][0]; // Get the first file from the array
+//         const imagePath = file.path.replace(/\\/g, "/").replace("public/", "");
+//         const baseUrl = `${req.protocol}://${req.get("host")}`;
+//         const fullImagePath = `${baseUrl}/${imagePath}`;
+//         return fullImagePath;
+//       };
 
-      const user = await userModel.findById(user_id);
+//       const user = await userModel.findById(user_id);
 
-      if (!user) {
-        loggerError.error("User not found");
-        return res.status(400).json({
-          success: false,
-          message: "User not found",
-        });
-      }
+//       if (!user) {
+//         loggerError.error("User not found");
+//         return res.status(400).json({
+//           success: false,
+//           message: "User not found",
+//         });
+//       }
 
-      // Check if the image is passed in the request
-      if (!files || !files["image"]) {
-        loggerError.error("Image not provided");
-        // Image not provided, handle the response without showing the image
-        return res.status(400).json({
-          success: false,
-          message: "Image not provided",
-        });
-      }
+//       if (!files || !files["image"]) {
+//         loggerError.error("Image not provided");
+//         return res.status(400).json({
+//           success: false,
+//           message: "Image not provided",
+//         });
+//       }
 
-      // Update the image in the user document
-      user.image =
-      // imageLocation;
-       files && files["image"] ? filesArray(files, "image") : "";
+//       user.image = files && files["image"] ? filesArray(files, "image") : "";
 
-      // Save the updated user document
-      const updatedUser = await user.save();
+//       const updatedUser = await user.save();
 
+//       loggerInfo.info("Image updated successfully");
+//       return res.status(200).json({
+//         success: true,
+//         message: "Image updated successfully",
+//         data: updatedUser,
+//       });
+//     } catch (error) {
+//       return res.status(500).json({
+//         success: false,
+//         message: "Internal server error",
+//         error: error.message,
+//       });
+//     }
+//   },
+// ];
 
-      loggerInfo.info("Image updated successfully")
-
-      return res.status(200).json({
-        success: true,
-        message: "Image updated successfully",
-        data: updatedUser,
-      });
-    } catch (error) {
-      return res.status(500).json({
-        success: false,
-        message: "Internal server error",
-        error: error.message,
-      });
-    }
-  },
-];
-
-//get user
-export const getUser = async (req, res) => {
+// get user
+const getUser = async (req, res) => {
   try {
     const { user_id } = req.user;
 
@@ -452,23 +415,8 @@ export const getUser = async (req, res) => {
       });
     }
 
-    //store data in cache in the form of key
-    // const redisKey = `users:getAllUser`;
-
-    //check if the data exist in the redis cache
-
-    // const cacheData = await redisClient.get(redisKey);
-
-    // if (cacheData) {
-    //   return res.status(200).json({
-    //     success: true,
-    //     message: "users found successfully",
-    //     data: JSON.parse(cacheData),
-    //   });
-    // }
-
-    //if the data does not exist in cache,fetch it from mongodb
     const getAllUser = await userModel.find({ _id: { $ne: user_id } });
+
     if (!getAllUser || getAllUser.length === 0) {
       loggerError.error("users not found");
       return res.status(400).json({
@@ -476,10 +424,6 @@ export const getUser = async (req, res) => {
         message: "users not found",
       });
     }
-
-    //save the data in redis cache for future use
-    // await redisClient.setex(redisKey, 300, JSON.stringify(getAllUser));
-
 
     loggerInfo.info("users found successfully");
     return res.status(200).json({
@@ -497,8 +441,8 @@ export const getUser = async (req, res) => {
   }
 };
 
-//get user by  user id
-export const getUserById = async (req, res) => {
+// get user by user id
+const getUserById = async (req, res) => {
   try {
     const { user_id } = req.user;
     const { id } = req.params;
@@ -513,8 +457,6 @@ export const getUserById = async (req, res) => {
       });
     }
 
-    // Validate if user_id is a valid ObjectId
-
     if (!mongoose.Types.ObjectId.isValid(id)) {
       loggerError.error("Invalid user ID");
       return res.status(400).json({
@@ -522,22 +464,6 @@ export const getUserById = async (req, res) => {
         message: "Invalid user ID",
       });
     }
-
-    // const redisKey = `users:${id}`;
-
-    //check if the data exist in redis cache
-
-    // const cacheData = await redisClient.get(redisKey);
-
-    // if (cacheData) {
-    //   return res.status(200).json({
-    //     success: true,
-    //     message: "user found successfully",
-    //     data: JSON.parse(cacheData),
-    //   });
-    // }
-
-    //if the data does not exist in cache fetch it from mongodb
 
     const getUser = await userModel.findById(id);
     if (!getUser) {
@@ -548,17 +474,12 @@ export const getUserById = async (req, res) => {
       });
     }
 
-    //save it cache for future use
-
-    // await redisClient.setex(redisKey, 300, JSON.stringify(getUser));
-
     loggerInfo.info("user found successfully");
     return res.status(200).json({
       success: true,
       message: "user found successfully",
       data: getUser,
     });
-
   } catch (error) {
     loggerError.error("Internal server error", error.message);
     return res.status(500).json({
@@ -569,3 +490,13 @@ export const getUserById = async (req, res) => {
   }
 };
 
+module.exports = {
+  userRegister,
+  userLogin,
+  forgetPassword,
+  verifyOtp,
+  resetPassword,
+  // updateImage,
+  getUser,
+  getUserById
+};

@@ -1,5 +1,5 @@
-import multer from "multer";
-import path from "path";
+// import multer from "multer";
+// import path from "path";
 // export const Storage = multer.diskStorage({
 //   destination: (req, file, callback) => {
 //     callback(null, path.join("public", "uploads"));
@@ -11,8 +11,9 @@ import path from "path";
 //     callback(null, baseName + "-" + Date.now() + extension);
 //   },
 // });
-
-export const handleMultipartData = multer({
+const multer=require('multer');
+const path=require('path');
+ const handleMultipartData = multer({
   // storage: Storage,
   storage:multer.memoryStorage(),
   limits: {
@@ -29,3 +30,5 @@ export const handleMultipartData = multer({
     return callback(new Error("File type not supported"), false);
   },
 });
+
+module.exports=handleMultipartData;

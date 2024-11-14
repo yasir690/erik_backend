@@ -1,7 +1,7 @@
 
-import winston from "winston";
-
-export const loggerInfo = winston.createLogger({
+// import winston from "winston";
+const winston=require('winston');
+ const loggerInfo = winston.createLogger({
     level: 'info',
     format: winston.format.json(),
     transports: [
@@ -10,7 +10,7 @@ export const loggerInfo = winston.createLogger({
     ]
 });
 
-export const loggerError = winston.createLogger({
+ const loggerError = winston.createLogger({
     level: 'error',
     format: winston.format.json(),
     transports: [
@@ -18,3 +18,5 @@ export const loggerError = winston.createLogger({
         new winston.transports.Console() // Add this line for console logging
     ]
 });
+
+module.exports={loggerInfo,loggerError}
