@@ -18,7 +18,7 @@ const serverless = require('serverless-http');
 const app = express();
 
 // Use environment variable or fallback to default API prefix
-const apiPrefix = process.env.API_PREFIX || '';
+// const apiPrefix ='/api/v1';
 const port = process.env.PORT || 4000;
 
 app.use(express.static('public'));
@@ -26,9 +26,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Define routes
-app.use(apiPrefix, UserRouters);
-app.use(apiPrefix, TaskRouters);
-app.use(apiPrefix, subTaskRouter);
+app.use( UserRouters);
+app.use( TaskRouters);
+app.use( subTaskRouter);
 
 // Database connection
 dbConnect().catch((err) => {
