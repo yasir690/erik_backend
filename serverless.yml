@@ -2,8 +2,8 @@ service: my-express-app
 
 provider:
   name: aws
-  runtime: nodejs20.x  # Node.js runtime version
-  region: ap-south-1  # Specify AWS region
+  runtime: nodejs20.x
+  region: ap-south-1
   environment:
     # Global environment variables loaded from .env file
     API_PREFIX: ${env:API_PREFIX}
@@ -21,22 +21,22 @@ provider:
 
 functions:
   app:
-    handler: index.handler  # Correct the handler to point to index.js
+    handler: index.handler
     events:
       - http:
-          path: /  # Handles the root URL
-          method: any  # Handles all HTTP methods (GET, POST, etc.)
+          path: /
+          method: any
       - http:
-          path: /{proxy+}  # Catches all other paths
-          method: any  # Handles all HTTP methods
+          path: /{proxy+}
+          method: any 
 
 plugins:
-  - serverless-dotenv-plugin  # Automatically loads environment variables from .env file
-  - serverless-offline  # For local testing
+  - serverless-dotenv-plugin
+  - serverless-offline
 
 package:
   include:
-    - index.js  # Ensure index.js is included in the deployment
-    - node_modules/**  # Include node_modules for dependencies
-    - router/**  # Include your router files if necessary
-    - connectivity.js  # Include any other needed files
+    - index.js
+    - node_modules/**
+    - router/**
+    - connectivity.js
