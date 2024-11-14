@@ -18,7 +18,7 @@ const serverless = require('serverless-http');
 const app = express();
 
 // Use environment variable or fallback to default API prefix
-const apiPrefix = process.env.API_PREFIX || '/api/v1';
+const apiPrefix = process.env.API_PREFIX || '';
 const port = process.env.PORT || 4000;
 
 app.use(express.static('public'));
