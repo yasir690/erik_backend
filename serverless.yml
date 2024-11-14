@@ -6,7 +6,7 @@ provider:
   region: ap-south-1
   environment:
     # Global environment variables loaded from .env file
-    API_PREFIX: ${env:API_PREFIX}
+    API_PREFIX: '/api/v1'
     DB_COLLECTION: ${env:DB_COLLECTION}
     DB_NAME: ${env:DB_NAME}
     MAIL_ENCRYPTION: ${env:MAIL_ENCRYPTION}
