@@ -24,13 +24,12 @@ functions:
     handler: index.handler
     events:
       - http:
-          path: /
+          path: /  # Define root path
           method: any
       - http:
-          path: /{proxy+}
-          method: any 
+          path: /{proxy+}  # Catch-all proxy path
+          method: any
 
 plugins:
   - serverless-dotenv-plugin
   - serverless-offline
-

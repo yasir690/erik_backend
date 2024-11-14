@@ -2,16 +2,23 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const dbConnect = require('./connectivity');
 const UserRouters = require('./router/userRouter');
-const TaskRouters = require('./router/taskRouter'); 
+const TaskRouters = require('./router/taskRouter');
 const subTaskRouter = require('./router/subTaskRouter');
 
-
 const serverless = require('serverless-http');
+
+// Import AWS SDK to configure clock skew correction
+const AWS = require('aws-sdk');
+
+// Set correctClockSkew to true to handle time discrepancies between client and AWS
+AWS.config.update({
+  correctClockSkew: true
+});
 
 const app = express();
 
 // Use environment variable or fallback to default API prefix
-const apiPrefix = process.env.API_PREFIX || '/api/v1';  
+const apiPrefix = process.env.API_PREFIX || '/api/v1';
 const port = process.env.PORT || 4000;
 
 app.use(express.static('public'));
@@ -23,7 +30,6 @@ app.use(apiPrefix, UserRouters);
 app.use(apiPrefix, TaskRouters);
 app.use(apiPrefix, subTaskRouter);
 
-
 // Database connection
 dbConnect().catch((err) => {
   console.error("Database connection failed:", err);
@@ -34,7 +40,6 @@ dbConnect().catch((err) => {
 app.get('/', (req, res) => {
   res.send('Welcome to the application deployed on Lambda!');
 });
-
 
 // Export handler for AWS Lambda
 module.exports.handler = serverless(app);
