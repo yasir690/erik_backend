@@ -1,10 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const dbConnect = require('./connectivity');
-// const { UserRouters } = require('./router/userRouter');
-const UserRouters = require('./router/userRouter'); // Ensure this is correctly imported
-const TaskRouters = require('./router/taskRouter'); // Ensure this is correctly imported
-const subTaskRouter = require('./router/subTaskRouter'); // Ensure this is correctly imported
+const UserRouters = require('./router/userRouter');
+const TaskRouters = require('./router/taskRouter'); 
+const subTaskRouter = require('./router/subTaskRouter');
 
 
 const serverless = require('serverless-http');
@@ -35,6 +34,7 @@ dbConnect().catch((err) => {
 app.get('/', (req, res) => {
   res.send('Welcome to the application deployed on Lambda!');
 });
+
 
 // Export handler for AWS Lambda
 module.exports.handler = serverless(app);
