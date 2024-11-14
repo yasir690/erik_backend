@@ -2,11 +2,11 @@ service: my-express-app
 
 provider:
   name: aws
-  runtime: nodejs20.x  # Specify Node.js runtime version
+  runtime: nodejs20.x  # Node.js runtime version
   region: ap-south-1  # Specify AWS region
-   environment:
+  environment:
     # Global environment variables loaded from .env file
-    API_PRIFEX: ${env:API_PRIFEX}
+    API_PREFIX: ${env:API_PREFIX}
     DB_COLLECTION: ${env:DB_COLLECTION}
     DB_NAME: ${env:DB_NAME}
     MAIL_ENCRYPTION: ${env:MAIL_ENCRYPTION}
@@ -31,11 +31,8 @@ functions:
           method: any  # Handles all HTTP methods
 
 plugins:
-  - serverless-offline  # For testing locally
-
-environment:
-  API_PREFIX: "/api/v1"  # Set the API_PREFIX environment variable
-  PORT: 4000  # Default port, although AWS Lambda doesn't use it
+  - serverless-dotenv-plugin  # Automatically loads environment variables from .env file
+  - serverless-offline  # For local testing
 
 package:
   include:

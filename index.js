@@ -45,7 +45,6 @@
 
 
 //for server less
-
 import express from 'express';
 import bodyParser from 'body-parser';
 import dbConnect from './connectivity.js';
