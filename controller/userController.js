@@ -1,5 +1,5 @@
 const userModel = require("../model/userModel");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { config } = require("dotenv");
 // const { randomInt } = require("crypto");
@@ -491,7 +491,7 @@ const getUserById = async (req, res) => {
 module.exports = {
   userRegister,
   userLogin,
-  forgetPassword,
+  // forgetPassword,
   verifyOtp,
   resetPassword,
   // updateImage,
