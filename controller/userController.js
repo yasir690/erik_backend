@@ -7,8 +7,6 @@ const otpModel = require("../model/otpModel");
 const { sendEmails } = require("../utils/sendEmail");
 const { handleMultipartData } = require("../utils/multiPartData");
 const mongoose = require("mongoose");
-// const Redis = require("ioredis");
-// const redisClient = new Redis();
 
 const { loggerInfo, loggerError } = require('../utils/log');
 

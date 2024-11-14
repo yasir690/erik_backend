@@ -4,11 +4,9 @@ const taskModel = require("../model/taskModel");
 const mongoose = require("mongoose");
 const moment = require("moment");
 const PDFDocument = require("pdfkit");
-// const Redis = require("ioredis");
 const { loggerError, loggerInfo } = require("../utils/log");
 
 
-// const redisClient = new Redis();
 //create subtask
 
  const createSubtask = async (req, res) => {
@@ -165,19 +163,6 @@ const { loggerError, loggerInfo } = require("../utils/log");
       });
     }
 
-    // const redisKey = `subtasks:subtask`;
-
-    //check if the data exist in cache
-
-    // const cacheData = await redisClient.get(redisKey);
-
-    // if (cacheData) {
-    //   return res.status(200).json({
-    //     success: true,
-    //     message: "subtasks found successfully",
-    //     data: JSON.parse(cacheData),
-    //   });
-    // }
 
     //if the data does not exist in cache fetch it from mongodb
 
@@ -202,10 +187,6 @@ const { loggerError, loggerInfo } = require("../utils/log");
         message: "sub task not found",
       });
     }
-
-    //save data in cache for future use
-    // await redisClient.setex(redisKey, 300, JSON.stringify(subtask));
-
 
 
     loggerInfo.info("subtasks found successfully");
@@ -242,17 +223,7 @@ const { loggerError, loggerInfo } = require("../utils/log");
       });
     }
 
-    // const redisKey = `subtasks:${id}`;
-
-    // const cacheData = await redisClient.get(redisKey);
-
-    // if (cacheData) {
-    //   return res.status(200).json({
-    //     success: true,
-    //     message: "found subtask successfully",
-    //     data: JSON.parse(cacheData),
-    //   });
-    // }
+ 
 
     //if data does not exist in cache fetch it from mongodb
 
@@ -301,8 +272,6 @@ const { loggerError, loggerInfo } = require("../utils/log");
     }
 
     //save data in cache for future use
-
-    // await redisClient.setex(redisKey, 300, JSON.stringify(foundSubTask));
 
     loggerInfo.info("found subtask successfully");
     return res.status(200).json({

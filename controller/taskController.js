@@ -3,13 +3,11 @@ const taskModel = require("../model/taskModel");
 const userModel = require("../model/userModel");
 const mongoose = require("mongoose");
 const moment = require("moment");
-// const Redis = require("ioredis");
 const { loggerError, loggerInfo } = require("../utils/log");
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
 
-// const redisClient = new Redis();
 //create task
 
  const createTask = async (req, res) => {
@@ -145,20 +143,7 @@ const path = require("path");
       });
     }
 
-    // const redisKey = `tasks:foundTasks`;
-
-    // console.log(redisKey);
-
-    // Check if the data exists in cache
-    // const cacheData = await redisClient.get(redisKey);
-
-    // if (cacheData) {
-    //   return res.status(200).json({
-    //     success: true,
-    //     message: "Tasks found successfully",
-    //     data: JSON.parse(cacheData),
-    //   });
-    // }
+   
 
     // If data does not exist in cache, fetch it from MongoDB
     const foundTasks = await taskModel
@@ -175,7 +160,7 @@ const path = require("path");
 
 
     // Save data in Redis for future use
-    // await redisClient.setex(redisKey, 300, JSON.stringify(foundTasks));
+
 
     loggerInfo.info("Tasks found successfully");
     return res.status(200).json({
@@ -224,19 +209,7 @@ const path = require("path");
       });
     }
 
-    // const redisKey = `tasks:${id}`;
-
-    //check if data exist in cache
-
-    // const cacheData = await redisClient.get(redisKey);
-
-    // if (cacheData) {
-    //   return res.status(200).json({
-    //     success: true,
-    //     message: "Task found successfully",
-    //     data: JSON.parse(cacheData),
-    //   });
-    // }
+  
 
     const findTask = await taskModel.findOne({ _id: id });
 
@@ -255,7 +228,6 @@ const path = require("path");
 
     //if data doest not exist in cache fetch from it mongodb
 
-    // await redisClient.setex(redisKey, 300, JSON.stringify(foundTaskById));
 
 
     loggerInfo.info("Task found successfully");
@@ -513,19 +485,7 @@ const scheduledinmilisecondnumber=parseInt(scheduledinmilisecond);
       });
     }
 
-    // const redisKey = `tasks:${targetDate}`;
-
-    //check if data exist in cache
-
-    // const cacheData = await redisClient.get(redisKey);
-
-    // if (cacheData) {
-    //   return res.status(200).json({
-    //     success: true,
-    //     message: "Task found successfully",
-    //     data: JSON.parse(cacheData),
-    //   });
-    // }
+   
 
    // Convert targetDate to milliseconds for the start and end of the day
    const startDate = new Date(targetDate);
@@ -557,7 +517,6 @@ const scheduledinmilisecondnumber=parseInt(scheduledinmilisecond);
     
     //if data doest not exist in cache fetch from it mongodb
 
-    // await redisClient.setex(redisKey, 300, JSON.stringify(gettaskbydate));
 
     loggerInfo.info("Tasks found successfully");
     return res.status(200).json({
