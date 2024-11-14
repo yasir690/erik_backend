@@ -2,7 +2,7 @@ const userModel = require("../model/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { config } = require("dotenv");
-const { randomInt } = require("crypto");
+// const { randomInt } = require("crypto");
 const otpModel = require("../model/otpModel");
 const { sendEmails } = require("../utils/sendEmail");
 const { handleMultipartData } = require("../utils/multiPartData");
@@ -155,46 +155,46 @@ const userLogin = async (req, res) => {
 };
 
 // forget password
-const forgetPassword = async (req, res) => {
-  try {
-    const { email } = req.body;
-    const user = await userModel.findOne({ email: email }).populate("otpEmail");
+// const forgetPassword = async (req, res) => {
+//   try {
+//     const { email } = req.body;
+//     const user = await userModel.findOne({ email: email }).populate("otpEmail");
 
-    if (!user) {
-      loggerError.error("User not found");
-      return res.status(400).json({
-        success: false,
-        message: "User not found",
-      });
-    }
+//     if (!user) {
+//       loggerError.error("User not found");
+//       return res.status(400).json({
+//         success: false,
+//         message: "User not found",
+//       });
+//     }
 
-    const OTP = randomInt(10000, 99999);
+//     const OTP = randomInt(10000, 99999);
 
-    const newOTP = new otpModel({
-      otpKey: OTP,
-      otpUsed: false,
-    });
+//     const newOTP = new otpModel({
+//       otpKey: OTP,
+//       otpUsed: false,
+//     });
 
-    const savedOTP = await newOTP.save();
-    user.otpEmail = savedOTP._id;
-    await user.save();
+//     const savedOTP = await newOTP.save();
+//     user.otpEmail = savedOTP._id;
+//     await user.save();
 
-    sendEmails(user.email, "Code sent successfully", `<h5>Your code is ${OTP}</h5>`);
-    loggerInfo.info("Code sent successfully");
+//     sendEmails(user.email, "Code sent successfully", `<h5>Your code is ${OTP}</h5>`);
+//     loggerInfo.info("Code sent successfully");
 
-    return res.status(200).json({
-      success: true,
-      message: "Code sent successfully",
-      data: OTP,
-    });
-  } catch (error) {
-    loggerError.error("Internal server error", error.message);
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
-  }
-};
+//     return res.status(200).json({
+//       success: true,
+//       message: "Code sent successfully",
+//       data: OTP,
+//     });
+//   } catch (error) {
+//     loggerError.error("Internal server error", error.message);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Internal server error",
+//     });
+//   }
+// };
 
 // verify OTP
 const verifyOtp = async (req, res) => {

@@ -4,7 +4,6 @@ const userModel = require("../model/userModel");
 const mongoose = require("mongoose");
 const { loggerError, loggerInfo } = require("../utils/log");
 const PDFDocument = require("pdfkit");
-const fs = require("fs");
 const path = require("path");
 
 //create task

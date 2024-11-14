@@ -13,7 +13,7 @@ UserRouters.post("/userRegister", limiter, userController.userRegister);
 UserRouters.post("/userLogin", limiter, userController.userLogin);
 
 // Forget password route
-UserRouters.post("/forgetPassword", userController.forgetPassword);
+// UserRouters.post("/forgetPassword", userController.forgetPassword);
 
 // Verify OTP route
 UserRouters.post("/verifyOtp", limiter, userController.verifyOtp);
