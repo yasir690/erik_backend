@@ -7,13 +7,13 @@ const subTaskRouter = require('./router/subTaskRouter');
 
 const serverless = require('serverless-http');
 
-// Import AWS SDK to configure clock skew correction
-const AWS = require('aws-sdk');
+// // Import AWS SDK to configure clock skew correction
+// const AWS = require('aws-sdk');
 
-// Set correctClockSkew to true to handle time discrepancies between client and AWS
-AWS.config.update({
-  correctClockSkew: true
-});
+// // Set correctClockSkew to true to handle time discrepancies between client and AWS
+// AWS.config.update({
+//   correctClockSkew: true
+// });
 
 const app = express();
 
