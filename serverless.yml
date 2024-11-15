@@ -5,8 +5,6 @@ provider:
   runtime: nodejs20.x
   region: ap-south-1
   environment:
-    # Global environment variables loaded from .env file
-    API_PREFIX: '/api/v1'
     DB_COLLECTION: ${env:DB_COLLECTION}
     DB_NAME: ${env:DB_NAME}
     MAIL_ENCRYPTION: ${env:MAIL_ENCRYPTION}
@@ -24,10 +22,10 @@ functions:
     handler: index.handler
     events:
       - http:
-          path: /  # Define root path
+          path: /
           method: any
       - http:
-          path: /{proxy+}  # Catch-all proxy path
+          path: /{proxy+}
           method: any
 
 plugins:

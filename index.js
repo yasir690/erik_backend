@@ -7,19 +7,7 @@ const subTaskRouter = require('./router/subTaskRouter');
 
 const serverless = require('serverless-http');
 
-// // Import AWS SDK to configure clock skew correction
-// const AWS = require('aws-sdk');
-
-// // Set correctClockSkew to true to handle time discrepancies between client and AWS
-// AWS.config.update({
-//   correctClockSkew: true
-// });
-
 const app = express();
-
-// Use environment variable or fallback to default API prefix
-// const apiPrefix ='/api/v1';
-const port = process.env.PORT || 4000;
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
@@ -37,9 +25,10 @@ dbConnect().catch((err) => {
 });
 
 // Root route (for testing)
-app.get('/', (req, res) => {
+app.get('/test', (req, res) => {
   res.send('Welcome to the application deployed on Lambda!');
 });
+
 
 // Export handler for AWS Lambda
 module.exports.handler = serverless(app);
